@@ -1,11 +1,6 @@
 ﻿using Ecommerce.Models.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using
+using Ecommerce.ProductService.Data;
 
 namespace Ecommerce.Models.General
 {

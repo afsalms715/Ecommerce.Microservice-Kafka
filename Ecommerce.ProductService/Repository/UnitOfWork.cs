@@ -1,14 +1,15 @@
-﻿using Ecommerce.ProductService.Repository.interfaces;
+﻿using Ecommerce.ProductService.Data;
+using Ecommerce.ProductService.Repository.interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.ProductService.Repository
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly DbContext _dbContext;
+        private readonly ProductDbContext _dbContext;
 
         private bool _disposed;
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(ProductDbContext dbContext)
         {
             _dbContext = dbContext;
         }
