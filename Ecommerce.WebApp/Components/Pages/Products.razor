@@ -1,0 +1,34 @@
+﻿@page "/products";
+@using Microsoft.Extensions.Configuration;
+@using Ecommerce.Models.General;
+@using Ecommerce.WebApp.Dtos;
+@inject IHttpClientFactory HttpFactory;
+<h3>Products</h3>
+
+<div class="row">
+    @foreach (var product in products)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">Rupees:@product.Price only</p>
+                <p class="card-text">Stock :@product.Stock</p>
+                <a href="#" class="btn btn-primary">Buy Now</a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private HttpClient Http;
+    private string ProductBaseUrl;
+    List<ProductDto> products = new List<ProductDto>();
+    protected override async Task OnInitializedAsync()
+    {
+        Http = HttpFactory.CreateClient("ProductApi");
+        var response = await Http.GetFromJsonAsync<Envelope<List<ProductDto>>>("product/get_all_products");
+        products = response.Data;
+        base.OnInitializedAsync();
+    }
+
+}
