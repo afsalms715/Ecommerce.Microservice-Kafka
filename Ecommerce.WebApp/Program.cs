@@ -5,6 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddHttpClient("ProductApi", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ProductBaseUrl"]);
+});
 
 var app = builder.Build();
 
