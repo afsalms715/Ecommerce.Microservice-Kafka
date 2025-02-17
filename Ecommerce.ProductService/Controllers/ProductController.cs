@@ -39,5 +39,25 @@ namespace Ecommerce.ProductService.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("get_product_by_id")]
+        public async Task<ActionResult<Envelope<ProductDto>>> GetProductById([FromQuery] GetProductByIdQuery request, CancellationToken cancellationToken)
+        {
+            var response = new Envelope<ProductDto>();
+            var data = await _mediator.Send(request, cancellationToken);
+            if (data != null)
+            {
+                response.StatusCode = 200;
+                response.Data = data;
+                response.Message = "Success";
+            }
+            else
+            {
+                response.StatusCode = 400;
+                response.Data = null;
+                response.Message = "Not Found";
+            }
+            return Ok(response);
+        }
     }
 }

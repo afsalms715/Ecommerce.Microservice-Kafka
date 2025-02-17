@@ -1,0 +1,59 @@
+﻿@page "/order/{ProductId:int}"
+@using Ecommerce.Models.General
+@using Ecommerce.WebApp.Dtos;
+@using Ecommerce.Models;
+@using Microsoft.Extensions.Configuration;
+@inject IHttpClientFactory HttpFactory;
+<h3>Order</h3>
+
+<form>
+    <div class="form-group">
+        <label for="name">Customer Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter customer name" @bind="order.CustomerName" />
+    </div>
+    <div class="form-group">
+        <label for="name">Product</label>
+        <input type="text" class="form-control" id="name" disabled @bind="productDto.Name" />
+    </div>
+    <div class="form-group">
+        <label for="name">Stock</label>
+        <input type="text" class="form-control" id="name" disabled @bind="productDto.Stock" />
+    </div>
+    <div class="form-group">
+        <label for="name">Price</label>
+        <input type="text" class="form-control" id="name" disabled @bind="productDto.Price" />
+    </div>
+    <div class="form-group">
+        <label for="address">Order Quantity</label>
+        <input type="number" class="form-control" id="address" placeholder="Enter Quantity" @bind="order.OrderQuantity" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Conform Order</button>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    public OrderModel order = new OrderModel();
+    public ProductDto productDto = new();
+    private HttpClient Http;
+    protected async override Task OnInitializedAsync()
+    {
+        Http = HttpFactory.CreateClient("ProductApi");
+        var response = await Http.GetFromJsonAsync<Envelope<ProductDto>>($"product/get_product_by_id?id={ProductId}");
+        if (response != null && response.Data != null)
+        {
+            productDto = response.Data;
+            StateHasChanged();
+        }
+        else
+        {
+
+        }
+        order.ProductId = ProductId;
+        base.OnInitialized();
+    }
+
+}
